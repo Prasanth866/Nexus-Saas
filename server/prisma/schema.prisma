@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -11,162 +5,161 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Organization {
-  id          String      @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String?
 
-  users       User[]
-  workspaces  Workspace[]
+  users      User[]
+  workspaces Workspace[]
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id             String        @id @default(cuid())
-  name           String
-  email          String        @unique
-  role           String
-  avatarUrl      String?
+  id        String  @id @default(cuid())
+  name      String
+  email     String  @unique
+  role      String
+  avatarUrl String?
 
   organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
 
-  assignedTasks  Task[]
-  comments       Comment[]
-  gitActivities  GitActivity[]
+  assignedTasks Task[]
+  comments      Comment[]
+  gitActivities GitActivity[]
 
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Workspace {
-  id             String        @id @default(cuid())
-  name           String
-  description    String?
+  id          String  @id @default(cuid())
+  name        String
+  description String?
 
   organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
 
-  projects       Project[]
+  projects Project[]
 
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Project {
-  id                    String          @id @default(cuid())
-  name                  String
-  projectKey            String
-  description           String?
+  id          String  @id @default(cuid())
+  name        String
+  projectKey  String
+  description String?
 
-  status                ProjectStatus
-  completionPercentage  Int             @default(0)
+  status               ProjectStatus
+  completionPercentage Int           @default(0)
 
-  workspaceId           String
-  workspace             Workspace       @relation(fields: [workspaceId], references: [id])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-  tasks                 Task[]
-  repositories          GitRepository[]
+  tasks        Task[]
+  repositories GitRepository[]
 
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Task {
-  id            String        @id @default(cuid())
-  title         String
-  description   String?
+  id          String  @id @default(cuid())
+  title       String
+  description String?
 
-  status        TaskStatus
-  priority      Priority
+  status   TaskStatus
+  priority Priority
 
-  dueDate       DateTime?
+  dueDate DateTime?
 
-  projectId     String
-  project       Project       @relation(fields: [projectId], references: [id])
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
 
-  assigneeId    String?
-  assignee      User?         @relation(fields: [assigneeId], references: [id])
+  assigneeId String?
+  assignee   User?   @relation(fields: [assigneeId], references: [id])
 
-  comments      Comment[]
+  comments Comment[]
 
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comment {
-  id            String        @id @default(cuid())
-  message       String
+  id      String @id @default(cuid())
+  message String
 
-  taskId        String
-  task          Task          @relation(fields: [taskId], references: [id])
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id])
 
-  userId        String
-  user          User          @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model GitRepository {
-  id             String          @id @default(cuid())
+  id String @id @default(cuid())
 
-  name           String
-  provider       String
-  repositoryUrl  String
-  defaultBranch  String
+  name          String
+  provider      String
+  repositoryUrl String
+  defaultBranch String
 
-  projectId      String
-  project        Project         @relation(fields: [projectId], references: [id])
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
 
-  activities     GitActivity[]
+  activities GitActivity[]
 
-  createdAt      DateTime        @default(now())
+  createdAt DateTime @default(now())
 }
 
 model GitActivity {
-  id             String          @id @default(cuid())
+  id String @id @default(cuid())
 
-  eventType      GitEventType
+  eventType GitEventType
 
-  branchName     String
-  commitHash     String?
-  commitMessage  String?
+  branchName    String
+  commitHash    String?
+  commitMessage String?
 
-  filesChanged   Int             @default(0)
-  linesAdded     Int             @default(0)
-  linesRemoved   Int             @default(0)
+  filesChanged Int @default(0)
+  linesAdded   Int @default(0)
+  linesRemoved Int @default(0)
 
-  repositoryId   String
-  repository     GitRepository   @relation(fields: [repositoryId], references: [id])
+  repositoryId String
+  repository   GitRepository @relation(fields: [repositoryId], references: [id])
 
-  userId         String
-  user           User            @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  fileChanges    GitFileChange[]
+  fileChanges GitFileChange[]
 
-  eventTime      DateTime
-  createdAt      DateTime        @default(now())
+  eventTime DateTime
+  createdAt DateTime @default(now())
 }
 
 model GitFileChange {
-  id             String          @id @default(cuid())
+  id String @id @default(cuid())
 
-  filePath       String
-  changeType     ChangeType
+  filePath   String
+  changeType ChangeType
 
-  linesAdded     Int             @default(0)
-  linesRemoved   Int             @default(0)
+  linesAdded   Int @default(0)
+  linesRemoved Int @default(0)
 
-  gitActivityId  String
-  gitActivity    GitActivity     @relation(fields: [gitActivityId], references: [id])
+  gitActivityId String
+  gitActivity   GitActivity @relation(fields: [gitActivityId], references: [id])
 
-  createdAt      DateTime        @default(now())
+  createdAt DateTime @default(now())
 }
 
 enum ProjectStatus {

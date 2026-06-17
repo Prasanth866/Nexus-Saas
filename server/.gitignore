@@ -1,5 +1,19 @@
+# dependencies
 node_modules
-# Keep environment variables out of version control
-.env
 
+# environment variables
+.env
+.env.*
+!.env.example
+
+# build
+dist/
+
+# prisma generated client
 /src/generated/prisma
+
+# ide files
+.idea
+
+# os files
+.DS_Store
