@@ -143,5 +143,10 @@ vite.config.ts.timestamp-*
 .vite/
 
 # IDE settings
-
 .idea/
+
+# firebase credentials
+firebase-service-account.json
+
+# prisma generated files
+server/src/generated
