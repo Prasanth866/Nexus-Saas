@@ -1,12 +1,12 @@
 
-import {initializeApp, cert, type ServiceAccount} from 'firebase-admin';
+import {initializeApp, cert, getApps, type ServiceAccount} from 'firebase-admin/app';
+import { getAuth } from "firebase-admin/auth";
 import serviceAccount from './firebase-service-account.json' with {type: "json"};
 
-initializeApp({
+const app = getApps()[0] ?? initializeApp({
     credential: cert(
-        serviceAccount as ServiceAccount
+        serviceAccount as ServiceAccount,
     ),
 });
 
-import * as adminNamespace from 'firebase-admin';
-export default adminNamespace;
+export const auth = getAuth(app);
