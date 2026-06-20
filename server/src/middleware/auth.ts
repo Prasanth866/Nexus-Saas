@@ -45,7 +45,6 @@ export async function verifyToken(
                     },
                 }
             });
-
         }
 
         req.user = user;
