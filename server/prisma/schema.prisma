@@ -108,6 +108,13 @@ enum ChangeType {
   RENAMED
 }
 
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
 // =========================================================================
 // 2. IDENTITY & TENANCY LAYER (Org -> Workspace -> Members)
 // =========================================================================
@@ -118,11 +125,15 @@ model Organization {
   slug        String               @unique
   description String?
   logoUrl     String?
+  settings    Json?                @default("{}")
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
   tags        MemberTag[]
   users       OrganizationMember[]
   workspaces  Workspace[]
+  webhooks    Webhook[]
+  gitIntegrations GitIntegration[]
+  invitations Invitation[]
 }
 
 model OrganizationMember {
@@ -147,6 +158,7 @@ model User {
   name        String
   email       String   @unique
   avatarUrl   String?
+  settings    Json?    @default("{}")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -161,6 +173,7 @@ model User {
   activityLogs       ActivityLog[]
   notificationActors Notification[]          @relation("NotificationActor")
   notifications      NotificationRecipient[]
+  invitations        Invitation[]
 }
 
 model MemberTag {
@@ -211,6 +224,7 @@ model Workspace {
   slug           String
   description    String?
   organizationId String
+  settings       Json?    @default("{}")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -221,8 +235,33 @@ model Workspace {
   tasks         Task[]
   sprints       Sprint[]
   gitActivities GitActivity[]
+  invitations   Invitation[]
 
   @@unique([organizationId, slug])
+  @@index([organizationId])
+}
+
+model Webhook {
+  id             String       @id @default(cuid())
+  url            String
+  secret         String
+  events         String[]
+  isActive       Boolean      @default(true)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId])
+}
+
+model GitIntegration {
+  id             String         @id @default(cuid())
+  installationId String         @unique
+  accessToken    String?
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  repositories   GitRepository[]
+
   @@index([organizationId])
 }
 
@@ -528,13 +567,16 @@ model GitRepository {
   repositoryUrl String
   defaultBranch String
   projectId     String
+  gitIntegrationId String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
   project    Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  gitIntegration GitIntegration? @relation(fields: [gitIntegrationId], references: [id], onDelete: SetNull)
   activities GitActivity[]
 
   @@index([projectId])
+  @@index([gitIntegrationId])
 }
 
 model GitActivity {
@@ -588,4 +630,26 @@ model GitFileChange {
   gitActivity GitActivity @relation(fields: [gitActivityId], references: [id], onDelete: Cascade)
 
   @@index([gitActivityId, filePath])
+}
+
+model Invitation {
+  id             String           @id @default(cuid())
+  email          String
+  organizationId String
+  workspaceId    String?
+  role           OrgRole          @default(MEMBER)
+  token          String           @unique
+  status         InvitationStatus @default(PENDING)
+  invitedById    String
+  expiresAt      DateTime
+  createdAt      DateTime         @default(now())
+  acceptedAt     DateTime?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, email])
+  @@index([email])
+  @@index([token])
 }
