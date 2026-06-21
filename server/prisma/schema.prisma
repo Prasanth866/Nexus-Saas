@@ -188,6 +188,31 @@ model MemberToTag {
   @@id([organizationMemberId, memberTagId])
 }
 
+model MemberTag {
+  id             String   @id @default(cuid())
+  name           String
+  color          String?
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members      MemberToTag[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model MemberToTag {
+  organizationMemberId String
+  memberTagId          String
+  createdAt            DateTime @default(now())
+
+  organizationMember OrganizationMember @relation(fields: [organizationMemberId], references: [id], onDelete: Cascade)
+  memberTag          MemberTag          @relation(fields: [memberTagId], references: [id], onDelete: Cascade)
+
+  @@id([organizationMemberId, memberTagId])
+}
+
 model WorkspaceMember {
   id             String        @id @default(cuid())
   workspaceId    String
