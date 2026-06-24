@@ -150,3 +150,6 @@ firebase-service-account.json
 
 # prisma generated files
 server/src/generated
+
+# os files
+.DS_Store
