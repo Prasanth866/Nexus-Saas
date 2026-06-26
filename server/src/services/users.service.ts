@@ -9,37 +9,44 @@ const supabaseClient = createClient(
 
 const BUCKET_NAME = process.env.BUCKET_NAME!;
 
-export class usersService{
+export class usersService {
     private userRepo = new UsersRepo();
-    async getProfile(firebaseUid: string, email: string) {
-        return await this.userRepo.findOrCreateByFirebaseUid(firebaseUid, email);
+
+    async getProfile(id: string, email: string) {
+        return await this.userRepo.findOrCreate(id, email);
     }
 
-    async getSettings(firebaseUid: string) {
-        const user = await this.userRepo.findByFirebaseUid(firebaseUid);
+    async getSettings(id: string) {
+        const user = await this.userRepo.findById(id);
         return user?.settings || {};
     }
 
-    async updateSettings(firebaseUid: string, settings: Record<string, any>) {
-        return await this.userRepo.updateSettingsByFirebaseUid(firebaseUid, settings);
+    async updateSettings(id: string, settings: Record<string, any>) {
+        return await this.userRepo.updateSettings(id, settings);
     }
 
-    async generatePresignedUploadUrl(firebaseUid: string, fileName: string) {
+    async generatePresignedUploadUrl(id: string, fileName: string) {
         const pureFileName = path.basename(fileName);
         const fileExtension = path.extname(pureFileName).replace('.', '').toLowerCase();
         const finalExtension = fileExtension || 'jpg';
-        const filePath = `${firebaseUid}/avatar-${Date.now()}.${finalExtension}`;
+
+        const filePath = `${id}/avatar-${Date.now()}.${finalExtension}`;
+
         const { data, error } = await supabaseClient.storage
             .from(BUCKET_NAME)
             .createSignedUploadUrl(filePath, { upsert: false });
+
         if (error || !data) {
             console.error("[Supabase Error Diagnostic] Attempted Path:", filePath, error);
             throw new Error(`Supabase Storage Error: ${error?.message || 'Failed to generate upload URL'}`);
         }
+
         const { data: publicUrlData } = supabaseClient.storage
             .from(BUCKET_NAME)
             .getPublicUrl(filePath);
-        await this.userRepo.updateAvatarByFirebaseUid(firebaseUid, publicUrlData.publicUrl);
+
+        await this.userRepo.updateAvatar(id, publicUrlData.publicUrl);
+
         return {
             uploadUrl: data.signedUrl,
             filePath,
@@ -47,16 +54,18 @@ export class usersService{
         };
     }
 
-    async deleteAvatar(firebaseUid: string) {
-        const user = await this.userRepo.findByFirebaseUid(firebaseUid);
+    async deleteAvatar(id: string) {
+        const user = await this.userRepo.findById(id);
         if (!user || !user.avatarUrl) {
-            return ;
+            return;
         }
+
         const urlPaths = user.avatarUrl.split(`${BUCKET_NAME}/`);
         if (urlPaths.length === 2) {
             const filePath = urlPaths[1];
             await supabaseClient.storage.from(BUCKET_NAME).remove([filePath]);
         }
-        await this.userRepo.updateAvatarByFirebaseUid(firebaseUid, null);
+
+        await this.userRepo.updateAvatar(id, null);
     }
 }

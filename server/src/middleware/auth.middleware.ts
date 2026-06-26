@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { auth} from "../config/firebase.js";
+import { auth } from "../config/firebase.js";
 
 export interface AuthRequest extends Request {
     user?: {
@@ -18,7 +18,7 @@ export const authenticateUser = async(
         res.status(401).json({error: 'Unauthorized: Missing or invalid token format'});
         return;
     }
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim();
     try{
         const decoded = await auth.verifyIdToken(token);
         req.user = {

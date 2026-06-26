@@ -120,20 +120,20 @@ enum InvitationStatus {
 // =========================================================================
 
 model Organization {
-  id          String               @id @default(cuid())
-  name        String
-  slug        String               @unique
-  description String?
-  logoUrl     String?
-  settings    Json?                @default("{}")
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  tags        MemberTag[]
-  users       OrganizationMember[]
-  workspaces  Workspace[]
-  webhooks    Webhook[]
+  id              String               @id @default(cuid())
+  name            String
+  slug            String               @unique
+  description     String?
+  logoUrl         String?
+  settings        Json?                @default("{}")
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  tags            MemberTag[]
+  users           OrganizationMember[]
+  workspaces      Workspace[]
+  webhooks        Webhook[]
   gitIntegrations GitIntegration[]
-  invitations Invitation[]
+  invitations     Invitation[]
 }
 
 model OrganizationMember {
@@ -153,14 +153,13 @@ model OrganizationMember {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  firebaseUid String   @unique
-  name        String
-  email       String   @unique
-  avatarUrl   String?
-  settings    Json?    @default("{}")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id
+  name      String
+  email     String   @unique
+  avatarUrl String?
+  settings  Json?    @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   organizations      OrganizationMember[]
   workspaces         WorkspaceMember[]
@@ -255,11 +254,11 @@ model Webhook {
 }
 
 model GitIntegration {
-  id             String         @id @default(cuid())
-  installationId String         @unique
+  id             String          @id @default(cuid())
+  installationId String          @unique
   accessToken    String?
   organizationId String
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   repositories   GitRepository[]
 
   @@index([organizationId])
@@ -561,19 +560,19 @@ model NotificationRecipient {
 // =========================================================================
 
 model GitRepository {
-  id            String      @id @default(cuid())
-  name          String
-  provider      GitProvider
-  repositoryUrl String
-  defaultBranch String
-  projectId     String
+  id               String      @id @default(cuid())
+  name             String
+  provider         GitProvider
+  repositoryUrl    String
+  defaultBranch    String
+  projectId        String
   gitIntegrationId String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
 
-  project    Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   gitIntegration GitIntegration? @relation(fields: [gitIntegrationId], references: [id], onDelete: SetNull)
-  activities GitActivity[]
+  activities     GitActivity[]
 
   @@index([projectId])
   @@index([gitIntegrationId])
