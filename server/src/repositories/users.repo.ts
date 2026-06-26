@@ -1,12 +1,12 @@
 import { prisma } from "../config/prisma.js";
 
 export class UsersRepo {
-    async findOrCreateByFirebaseUid(firebaseUid: string, email: string, name?: string) {
+    async findOrCreate(id: string, email: string, name?: string) {
         return prisma.user.upsert({
-            where: { firebaseUid },
+            where: { id },
             update: {},
-            create:{
-                firebaseUid,
+            create: {
+                id,
                 email,
                 name: name || email.split("@")[0],
                 settings: {},
@@ -14,24 +14,24 @@ export class UsersRepo {
         });
     }
 
-    async findByFirebaseUid(firebaseUid: string){
+    async findById(id: string) {
         return prisma.user.findUnique({
-            where: {firebaseUid}
+            where: { id },
         });
     }
 
-    async updateSettingsByFirebaseUid(firebaseUid: string, settings: Record<string, any>){
+    async updateSettings(id: string, settings: Record<string, any> ) {
         return prisma.user.update({
-            where: {firebaseUid : firebaseUid},
+            where: { id },
             data: { settings },
-            select: { settings: true},
+            select: { settings: true },
         });
     }
 
-    async updateAvatarByFirebaseUid(firebaseUid: string, avatarUrl: string | null){
+    async updateAvatar(id: string, avatarUrl: string | null) {
         return prisma.user.update({
-        where: {firebaseUid : firebaseUid},
-        data: { avatarUrl },
+            where: { id },
+            data: { avatarUrl },
         });
     }
 }
