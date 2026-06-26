@@ -153,3 +153,6 @@ server/src/generated
 
 # os files
 .DS_Store
+
+# dev utilities
+server/src/utils
