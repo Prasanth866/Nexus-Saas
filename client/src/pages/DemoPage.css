@@ -1,0 +1,364 @@
+﻿.demo-page {
+  min-height: 100vh;
+  background: #ffffff; /* Changed to pure white to match the mockup */
+  color: #000000;
+  padding-bottom: 40px;
+}
+
+.demo-topbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 40px;
+  border-bottom: 2px solid #000000; /* Black borders to match wireframe style */
+  background: #ffffff;
+}
+
+.demo-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.demo-brand.compact .demo-brand-mark {
+  width: 34px;
+  height: 34px;
+}
+
+.demo-brand.compact .demo-brand-name {
+  font-size: 15px;
+}
+
+.demo-brand.compact .demo-brand-tag {
+  font-size: 8px;
+}
+
+.demo-brand-mark {
+  width: 42px;
+  height: 42px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000; /* Solid black */
+  color: #ffffff;
+  font-size: 31px;
+  font-weight: 800;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.demo-brand-mark span {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.demo-brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.demo-brand-name {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: #000000;
+}
+
+.demo-brand-tag {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: #000000;
+}
+
+.demo-nav {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.demo-nav a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.demo-nav a:hover {
+  text-decoration: underline;
+}
+
+.demo-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.demo-pill {
+  border: 2px solid #000000;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.demo-pill-dark {
+  background: #000000;
+  color: #ffffff;
+}
+
+.demo-pill-light {
+  background: #ffffff;
+  color: #000000;
+}
+
+.demo-main {
+  padding: 40px 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.demo-hero {
+  width: min(800px, 100%);
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.demo-kicker {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: #000000;
+}
+
+.demo-cta {
+  margin-top: 40px;
+  align-self: center; /* Centers the button under the text */
+  border: 0;
+  height: 44px;
+  min-width: 220px;
+  border-radius: 999px;
+  padding: 0 8px 0 24px;
+  background: #000000; /* Solid black to match photo */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.demo-cta-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #e0e0e0 0%, #999999 100%);
+  color: #000000;
+  font-size: 12px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.demo-panels {
+  width: min(960px, 100%);
+  margin: 50px auto 0;
+  display: grid;
+  gap: 20px;
+}
+
+.demo-panel {
+  min-height: 320px;
+  border-radius: 42px;
+  background: #ffffff;
+  border: 2px solid #000000; /* Added black border to match the wireframe */
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  padding: 40px 34px;
+  overflow: hidden;
+}
+
+.demo-panel-alt {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.demo-panel-text h2,
+.demo-panel-text h3 {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000000; /* Stripped blue color, strictly black */
+}
+
+.demo-panel-text h2 {
+  font-size: 28px;
+  max-width: 330px;
+}
+
+.demo-mt {
+  margin-top: 24px !important;
+}
+
+.demo-panel-text h3 {
+  font-size: 24px;
+  max-width: 320px;
+}
+
+.demo-panel-text p {
+  margin: 14px 0 0;
+  color: #333333; /* Dark gray instead of blue */
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  max-width: 360px;
+}
+
+.demo-panel-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-visual-slot {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  background: #f5f5f5; /* Light grayscale */
+  border: 1px solid #cccccc;
+}
+
+.demo-panel-empty .demo-panel-visual {
+  min-height: 230px;
+}
+
+.demo-footer {
+  width: min(960px, 100%);
+  margin: 40px auto 0;
+  border: 2px solid #000000; /* Solid black border */
+  border-radius: 20px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 30px;
+}
+
+.demo-footer-brand {
+  max-width: 500px;
+}
+
+.demo-footer-brand p {
+  margin: 14px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #000000;
+  max-width: 250px;
+}
+
+.demo-social-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.demo-social-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.demo-social-circle:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.demo-footer-contact {
+  text-align: left;
+  min-width: 220px;
+}
+
+.demo-footer-contact h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.demo-footer-contact a {
+  display: block;
+  color: #000000;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.demo-footer-contact a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .demo-topbar,
+  .demo-actions,
+  .demo-nav,
+  .demo-footer,
+  .demo-panel {
+    flex-direction: column;
+  }
+
+  .demo-topbar {
+    height: auto;
+    padding: 16px 20px;
+    align-items: flex-start;
+  }
+
+  .demo-nav {
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .demo-actions {
+    flex-direction: row;
+  }
+
+  .demo-panel {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .demo-footer {
+    align-items: flex-start;
+  }
+}
