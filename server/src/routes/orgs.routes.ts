@@ -7,55 +7,105 @@ import { OrgRole } from "../generated/prisma/client.js";
 import {
     createOrgSchema,
     updateOrgSchema,
-    updateOrgSettingsSchema
+    updateOrgSettingsSchema,
+    inviteMemberSchema,
+    updateMemberRoleSchema
 } from "../validators/orgs.schema.js";
 
 const router = Router();
 const controller = new OrganizationController();
 
+router.get(
+    "/invitations/preview",
+    controller.previewInvitation.bind(controller)
+);
+
 router.use(authenticateUser);
+
+router.post(
+    "/invitations/accept",
+    controller.acceptInvitation.bind(controller)
+);
 
 router.get(
     "/orgs",
-    (req, res) => controller.listMyOrgs(req as any, res)
+    controller.listMyOrgs.bind(controller)
 );
 
 router.post(
     "/orgs",
     validateRequest(createOrgSchema),
-    (req, res) => controller.createOrg(req as any, res)
+    controller.createOrg.bind(controller)
 );
 
 router.get(
     "/orgs/:orgId",
     requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN, OrgRole.MEMBER, OrgRole.GUEST]),
-    (req, res) => controller.getOrg(req as any, res)
+    controller.getOrg.bind(controller)
 );
 
 router.patch(
     "/orgs/:orgId",
-    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
     validateRequest(updateOrgSchema),
-    (req, res) => controller.updateOrg(req as any, res)
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.updateOrg.bind(controller)
 );
 
 router.delete(
     "/orgs/:orgId",
     requireOrgMembership([OrgRole.OWNER]),
-    (req, res) => controller.deleteOrg(req as any, res)
+    controller.deleteOrg.bind(controller)
 );
 
 router.get(
     "/orgs/:orgId/settings",
     requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
-    (req, res) => controller.getSettings(req as any, res)
+    controller.getSettings.bind(controller)
 );
 
 router.patch(
     "/orgs/:orgId/settings",
-    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
     validateRequest(updateOrgSettingsSchema),
-    (req, res) => controller.updateSettings(req as any, res)
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.updateSettings.bind(controller)
+);
+
+router.get(
+    "/orgs/:orgId/members",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN, OrgRole.MEMBER]),
+    controller.getMembers.bind(controller)
+);
+
+router.post(
+    "/orgs/:orgId/members/invite",
+    validateRequest(inviteMemberSchema),
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.inviteMember.bind(controller)
+);
+
+router.get(
+    "/orgs/:orgId/invitations",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.getInvitations.bind(controller)
+);
+
+router.post(
+    "/orgs/:orgId/invitations/:invitationId/revoke",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.revokeInvitation.bind(controller)
+);
+
+router.patch(
+    "/orgs/:orgId/members/:memberId",
+    validateRequest(updateMemberRoleSchema),
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.updateMemberRole.bind(controller)
+);
+
+router.delete(
+    "/orgs/:orgId/members/:memberId",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.removeMember.bind(controller)
 );
 
 export default router;

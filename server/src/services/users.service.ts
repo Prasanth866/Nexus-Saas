@@ -1,11 +1,6 @@
 import path from 'path';
 import { UsersRepo } from "../repositories/users.repo.js";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseClient = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { supabaseClient } from "../config/supabase.js";
 
 const BUCKET_NAME = process.env.BUCKET_NAME!;
 

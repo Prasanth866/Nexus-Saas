@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { OrgRole } from "../generated/prisma/client.js";
+
+const orgRoleValues = Object.values(OrgRole) as [string, ...string[]];
 
 export const createOrgSchema = z.object({
     body: z.object({
@@ -28,5 +31,32 @@ export const updateOrgSettingsSchema = z.object({
     }),
     body: z.object({
         settings: z.record(z.string(), z.any(), { message: "Settings object payload is required" })
+    })
+});
+
+export const inviteMemberSchema = z.object({
+    params: z.object({
+        orgId: z.cuid2()
+    }),
+    body: z.object({
+        email: z
+            .email("Invalid request format for target email structure")
+            .trim()
+            .toLowerCase(),
+        role: z.enum(orgRoleValues, {
+            message: "Invalid OrgRole provided. Must be OWNER, ADMIN, MEMBER, or GUEST"
+        })
+    })
+});
+
+export const updateMemberRoleSchema = z.object({
+    params: z.object({
+        orgId: z.cuid2(),
+        memberId: z.cuid2()
+    }),
+    body: z.object({
+        role: z.enum(orgRoleValues, {
+            message: "Invalid OrgRole provided. Must be OWNER, ADMIN, MEMBER, or GUEST"
+        })
     })
 });
