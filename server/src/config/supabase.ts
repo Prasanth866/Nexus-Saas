@@ -16,4 +16,4 @@ export const supabaseClient = createClient(supabaseUrl, supabaseServiceKey, {
     },
 });
 
-export const BUCKET_NAME = process.env.BUCKET_NAME;
+export const BUCKET_NAME = process.env.BUCKET_NAME!;

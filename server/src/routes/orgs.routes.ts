@@ -108,4 +108,16 @@ router.delete(
     controller.removeMember.bind(controller)
 );
 
+router.post(
+    "/orgs/:orgId/logo/upload-url",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.getLogoUploadUrl.bind(controller)
+);
+
+router.delete(
+    "/orgs/:orgId/logo",
+    requireOrgMembership([OrgRole.OWNER, OrgRole.ADMIN]),
+    controller.deleteOrgLogo.bind(controller)
+);
+
 export default router;

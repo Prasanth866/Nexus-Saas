@@ -1,10 +1,8 @@
 import { OrgsRepo } from "../repositories/orgs.repo.js";
 import { OrgRole, InvitationStatus } from "../generated/prisma/client.js";
-import { supabaseClient } from "../config/supabase.js";
+import { supabaseClient, BUCKET_NAME } from "../config/supabase.js";
 import crypto from "crypto";
 import path from "path";
-
-const BUCKET_NAME = process.env.BUCKET_NAME;
 
 export class OrganizationService {
     private orgRepo = new OrgsRepo();
@@ -199,16 +197,29 @@ export class OrganizationService {
             throw new Error(`Supabase Storage Error: ${error?.message || 'Failed to generate upload URL'}`);
         }
 
-        const { data: publicUrlData } = supabaseClient.storage
-            .from(BUCKET_NAME)
-            .getPublicUrl(filePath);
-
-        await this.orgRepo.updateLogo(orgId, publicUrlData.publicUrl);
+        await this.orgRepo.updateLogo(orgId, filePath);
 
         return {
             uploadUrl: data.signedUrl,
             filePath,
-            logoUrl: publicUrlData.publicUrl,
         };
+    }
+
+    async deleteLogo(orgId: string) {
+        const org = await this.orgRepo.findById(orgId);
+
+        if (!org || !org.logoUrl) {
+            return;
+        }
+
+        const { error } = await supabaseClient.storage
+            .from(BUCKET_NAME)
+            .remove([org.logoUrl]);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        await this.orgRepo.updateLogo(orgId, null);
     }
 }

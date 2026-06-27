@@ -262,4 +262,31 @@ export class OrganizationController {
             this.handleError(res, error);
         }
     }
+
+    async getLogoUploadUrl(req: OrgAuthRequest, res: Response): Promise<void> {
+        try {
+            const { orgId } = req.params as { orgId: string };
+            const { fileName } = req.body as { fileName: string };
+
+            if (!fileName) {
+                res.status(400).json({ error: "Field 'fileName' is required inside payload body" });
+                return;
+            }
+
+            const uploadContext = await orgService.generatePresignedLogoUrl(orgId, fileName);
+            res.status(200).json(uploadContext);
+        } catch (error: any) {
+            this.handleError(res, error);
+        }
+    }
+
+    async deleteOrgLogo(req: OrgAuthRequest, res: Response): Promise<void> {
+        try {
+            const { orgId } = req.params as { orgId: string };
+            await orgService.deleteLogo(orgId);
+            res.status(200).json({ message: "Organization logo completely removed" });
+        } catch (error: any) {
+            this.handleError(res, error);
+        }
+    }
 }

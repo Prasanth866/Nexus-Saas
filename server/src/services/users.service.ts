@@ -1,8 +1,6 @@
 import path from 'path';
 import { UsersRepo } from "../repositories/users.repo.js";
-import { supabaseClient } from "../config/supabase.js";
-
-const BUCKET_NAME = process.env.BUCKET_NAME!;
+import { supabaseClient, BUCKET_NAME } from "../config/supabase.js";
 
 export class usersService {
     private userRepo = new UsersRepo();
