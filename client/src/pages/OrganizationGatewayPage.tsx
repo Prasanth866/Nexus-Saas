@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Bell, User } from 'lucide-react';
 
-export default function OrganizationGatewayPage() {
+interface OrganizationGatewayPageProps {
+  onSelectOrg?: () => void;
+}
+
+export default function OrganizationGatewayPage({ onSelectOrg }: OrganizationGatewayPageProps) {
   const [createOrgName, setCreateOrgName] = useState('');
   const [createWorkspace, setCreateWorkspace] = useState('');
   const [createSecurity, setCreateSecurity] = useState('');
@@ -104,6 +108,7 @@ export default function OrganizationGatewayPage() {
                   Cancel
                 </button>
                 <button 
+                  onClick={onSelectOrg}
                   className="px-6 py-1.5 rounded-full border-2 border-black font-bold text-sm bg-[#d4d4d4] hover:bg-black hover:text-white transition-colors shadow-sm cursor-pointer"
                 >
                   Create Enterprise
@@ -155,6 +160,7 @@ export default function OrganizationGatewayPage() {
                   Cancel
                 </button>
                 <button 
+                  onClick={onSelectOrg}
                   className="px-6 py-1.5 rounded-full border-2 border-black font-bold text-sm bg-[#d4d4d4] hover:bg-black hover:text-white transition-colors shadow-sm cursor-pointer"
                 >
                   Join Enterprise
@@ -176,19 +182,19 @@ export default function OrganizationGatewayPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b-2 border-black">
+                <tr className="border-b-2 border-black hover:bg-gray-100 transition-colors cursor-pointer" onClick={onSelectOrg}>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="h-12"></td>
                 </tr>
-                <tr className="border-b-2 border-black">
+                <tr className="border-b-2 border-black hover:bg-gray-100 transition-colors cursor-pointer" onClick={onSelectOrg}>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="h-12"></td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-gray-100 transition-colors cursor-pointer" onClick={onSelectOrg}>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
                   <td className="border-r-2 border-black h-12"></td>
