@@ -147,6 +147,7 @@ vite.config.ts.timestamp-*
 
 # firebase credentials
 firebase-service-account.json
+server/src/config/firebase-service-account.json
 
 # prisma generated files
 server/src/generated

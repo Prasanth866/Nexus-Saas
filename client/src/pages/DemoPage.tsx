@@ -1,4 +1,4 @@
-﻿import './DemoPage.css';
+import './DemoPage.css';
 
 type DemoPageProps = {
   onOpenAuth: (mode?: 'login' | 'signup') => void;
@@ -62,7 +62,9 @@ export default function DemoPage({ onOpenAuth }: DemoPageProps) {
                 Simplifies the planning, scoping, and automated tracking of iteration cycles to support data-driven velocity forecasting while maintaining clear alignment with product roadmaps and engineering standards.
               </p>
             </div>
-            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true" />
+            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true">
+              <img src="/lifecycle_dashboard.png" alt="Project Lifecycle Dashboard" />
+            </div>
           </article>
 
           <article className="demo-panel demo-panel-alt demo-panel-empty" id="about">
@@ -72,7 +74,9 @@ export default function DemoPage({ onOpenAuth }: DemoPageProps) {
                 Because building complex software requires zero friction. Nexus centralizes your team's lifecycle into a single dashboard view, keeping your frontend, backend, and flow management completely aligned from initial code patch to production deployment.
               </p>
             </div>
-            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true" />
+            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true">
+              <img src="/team_collaboration.png" alt="Team Collaboration Dashboard" />
+            </div>
           </article>
 
           <article className="demo-panel demo-panel-empty" id="pricing">
@@ -86,7 +90,9 @@ export default function DemoPage({ onOpenAuth }: DemoPageProps) {
                 Leverages inline analytical dashboards and burndown metrics to deliver data-driven insight into project health, allowing managers to proactively identify, evaluate, and mitigate operational delivery risks early.
               </p>
             </div>
-            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true" />
+            <div className="demo-panel-visual demo-visual-slot" aria-hidden="true">
+              <img src="/analytics_dashboard.png" alt="Predictive Analytics Dashboard" />
+            </div>
           </article>
         </section>
       </main>
